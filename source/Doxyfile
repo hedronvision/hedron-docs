@@ -36,19 +36,19 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "My Project"
+PROJECT_NAME           = "Hedron Vision"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         =
+PROJECT_NUMBER         = 0.0.1
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          =
+PROJECT_BRIEF          = "VR Without The Overhead"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -62,7 +62,12 @@ PROJECT_LOGO           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       =
+## Doxygen is executed by exhale, so this directory is relative to `conf.py`.
+## Note: This can't be e.g. `../build/doxygen` or doxygen will error if
+## `../build` doesn't exist.
+## Note: This could debatably live outside `source/` but for now we're treating
+## the doxygen output as "source" for the Sphinx build step.
+OUTPUT_DIRECTORY       = ./doxybuild
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -176,7 +181,11 @@ FULL_PATH_NAMES        = YES
 # will be relative from the directory where doxygen is started.
 # This tag requires that the tag FULL_PATH_NAMES is set to YES.
 
-STRIP_FROM_PATH        =
+## Doxygen is executed by exhale, so this directory is relative to `conf.py`.
+## Note: This _must_ match `exhale_args['doxygenStripFromPath']` in `conf.py`.
+## The redundancy is a workaround for an apparent bug in Read the Docs hosting.
+## See: https://exhale.readthedocs.io/en/latest/reference/configs.html#exhale.configs.doxygenStripFromPath
+STRIP_FROM_PATH        = ..
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of the
 # path mentioned in the documentation of a class, which tells the reader which
@@ -201,7 +210,9 @@ SHORT_NAMES            = NO
 # description.)
 # The default value is: NO.
 
-JAVADOC_AUTOBRIEF      = NO
+## Mark the first line of a comment block as the \brief description.
+## See: https://www.doxygen.nl/manual/docblocks.html
+JAVADOC_AUTOBRIEF      = YES
 
 # If the JAVADOC_BANNER tag is set to YES then doxygen will interpret a line
 # such as
@@ -286,7 +297,7 @@ TAB_SIZE               = 4
 ##     ///
 ##     /// \endrst
 ##
-## NOTES:
+## Notes:
 ##     1. \rst and \endrst must be on their own line.
 ##     2. Leading slashes are required. An alternative is leading-asterisk.
 ##     3. There is also an embed:rst:inline tag if needed.
@@ -301,7 +312,11 @@ ALIASES               += "endrst=\endverbatim"
 # members will be omitted, etc.
 # The default value is: NO.
 
-OPTIMIZE_OUTPUT_FOR_C  = NO
+## Even though the Doxywizard enables OPTIMIZE_OUTPUT_JAVA when the button to
+## optimize Java or C# is selected, the changes are less appropriate than if
+## OPTIMIZE_OUTPUT_FOR_C is enabled.
+## See: https://stackoverflow.com/questions/45766412/how-can-i-stop-doxygen-from-generating-a-packages-index-for-a-c-sharp-project
+OPTIMIZE_OUTPUT_FOR_C  = YES
 
 # Set the OPTIMIZE_OUTPUT_JAVA tag to YES if your project consists of Java or
 # Python sources only. Doxygen will then generate output that is more tailored
@@ -492,7 +507,8 @@ LOOKUP_CACHE_SIZE      = 0
 # DOT_NUM_THREADS setting.
 # Minimum value: 0, maximum value: 32, default value: 1.
 
-NUM_PROC_THREADS       = 1
+## Process input files in parallel.
+NUM_PROC_THREADS       = 0
 
 #---------------------------------------------------------------------------
 # Build related configuration options
@@ -506,31 +522,34 @@ NUM_PROC_THREADS       = 1
 # normally produced when WARNINGS is set to YES.
 # The default value is: NO.
 
-EXTRACT_ALL            = NO
+## For the purposes of debugging, extract _all_ symbols.
+## Furthermore, enable each of the EXTRACT_* tags below.
+## Eventually, we should wean off the truly private symbols.
+EXTRACT_ALL            = YES
 
 # If the EXTRACT_PRIVATE tag is set to YES, all private members of a class will
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 
 # If the EXTRACT_PRIV_VIRTUAL tag is set to YES, documented private virtual
 # methods of a class will be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIV_VIRTUAL   = NO
+EXTRACT_PRIV_VIRTUAL   = YES
 
 # If the EXTRACT_PACKAGE tag is set to YES, all members with package or internal
 # scope will be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PACKAGE        = NO
+EXTRACT_PACKAGE        = YES
 
 # If the EXTRACT_STATIC tag is set to YES, all static members of a file will be
 # included in the documentation.
 # The default value is: NO.
 
-EXTRACT_STATIC         = NO
+EXTRACT_STATIC         = YES
 
 # If the EXTRACT_LOCAL_CLASSES tag is set to YES, classes (and structs) defined
 # locally in source files will be included in the documentation. If set to NO,
@@ -555,7 +574,7 @@ EXTRACT_LOCAL_METHODS  = NO
 # are hidden.
 # The default value is: NO.
 
-EXTRACT_ANON_NSPACES   = NO
+EXTRACT_ANON_NSPACES   = YES
 
 # If the HIDE_UNDOC_MEMBERS tag is set to YES, doxygen will hide all
 # undocumented members inside documented classes or files. If set to NO these
@@ -868,7 +887,8 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  =
+## Tell Doxygen where to look for input folders / files.
+INPUT                  = ../example-code
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -895,53 +915,8 @@ INPUT_ENCODING         = UTF-8
 # C comment), *.py, *.pyw, *.f90, *.f95, *.f03, *.f08, *.f18, *.f, *.for, *.vhd,
 # *.vhdl, *.ucf, *.qsf and *.ice.
 
-FILE_PATTERNS          = *.c \
-                         *.cc \
-                         *.cxx \
-                         *.cpp \
-                         *.c++ \
-                         *.java \
-                         *.ii \
-                         *.ixx \
-                         *.ipp \
-                         *.i++ \
-                         *.inl \
-                         *.idl \
-                         *.ddl \
-                         *.odl \
-                         *.h \
-                         *.hh \
-                         *.hxx \
-                         *.hpp \
-                         *.h++ \
-                         *.cs \
-                         *.d \
-                         *.php \
-                         *.php4 \
-                         *.php5 \
-                         *.phtml \
-                         *.inc \
-                         *.m \
-                         *.markdown \
-                         *.md \
-                         *.mm \
-                         *.dox \
-                         *.doc \
-                         *.txt \
-                         *.py \
-                         *.pyw \
-                         *.f90 \
-                         *.f95 \
-                         *.f03 \
-                         *.f08 \
-                         *.f18 \
-                         *.f \
-                         *.for \
-                         *.vhd \
-                         *.vhdl \
-                         *.ucf \
-                         *.qsf \
-                         *.ice
+## Only need to include C# files!
+FILE_PATTERNS          = *.cs
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -957,6 +932,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
+## Exclude certain file patterns from the INPUT section (nothing for now).
 EXCLUDE                =
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
@@ -1079,7 +1055,11 @@ USE_MDFILE_AS_MAINPAGE =
 # also VERBATIM_HEADERS is set to NO.
 # The default value is: NO.
 
-SOURCE_BROWSER         = NO
+## Generate source code files in the output documentation.
+## Note: This is really only useful for Doxygen's HTML output (which we're only
+## using to debug), as exhale already generates program listings (with
+## XML_PROGRAMLISTING).
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body of functions,
 # classes and enums directly into the documentation.
@@ -1196,6 +1176,18 @@ GENERATE_HTML          = NO
 # The default directory is: html.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
+## HTML output is built at ${OUTPUT_DIRECTORY}/${HTML_OUTPUT}.
+## Note: When debugging, it's sometimes useful to build HTML output with Doxygen
+## - not Sphinx - to check a docstring quickly. To do so:
+##
+##     # Must run from the directory with `Doxyfile` for valid relative paths.
+##     $ cd /path/to/hedron-docs/source
+##
+##     # Send this file's config values, overriding GENERATE_HTML, to Doxygen.
+##     $ (cat Doxyfile; echo 'GENERATE_HTML = YES') | doxygen -
+##
+##     # View the doxygen-generated results.
+##     $ open path/to/index.html
 HTML_OUTPUT            = html
 
 # The HTML_FILE_EXTENSION tag can be used to specify the file extension for each
@@ -1279,7 +1271,7 @@ HTML_EXTRA_FILES       =
 # Minimum value: 0, maximum value: 359, default value: 220.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_HUE    = 220
+HTML_COLORSTYLE_HUE    = 180
 
 # The HTML_COLORSTYLE_SAT tag controls the purity (or saturation) of the colors
 # in the HTML output. For a value of 0 the output will use grayscales only. A
@@ -1307,7 +1299,8 @@ HTML_COLORSTYLE_GAMMA  = 80
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_TIMESTAMP         = NO
+## Since we're really only using Doxygen's HTML for debugging, include the time.
+HTML_TIMESTAMP         = YES
 
 # If the HTML_DYNAMIC_MENUS tag is set to YES then the generated HTML
 # documentation will contain a main index with vertical navigation menus that
@@ -1361,7 +1354,7 @@ GENERATE_DOCSET        = NO
 # The default value is: Doxygen generated docs.
 # This tag requires that the tag GENERATE_DOCSET is set to YES.
 
-DOCSET_FEEDNAME        = "Doxygen generated docs"
+DOCSET_FEEDNAME        = "Hedron Vision Generated Documentation"
 
 # This tag specifies a string that should uniquely identify the documentation
 # set bundle. This should be a reverse domain-name style string, e.g.
@@ -1369,7 +1362,7 @@ DOCSET_FEEDNAME        = "Doxygen generated docs"
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_DOCSET is set to YES.
 
-DOCSET_BUNDLE_ID       = org.doxygen.Project
+DOCSET_BUNDLE_ID       = com.hedronvision.doxygen
 
 # The DOCSET_PUBLISHER_ID tag specifies a string that should uniquely identify
 # the documentation publisher. This should be a reverse domain-name style
@@ -1377,13 +1370,13 @@ DOCSET_BUNDLE_ID       = org.doxygen.Project
 # The default value is: org.doxygen.Publisher.
 # This tag requires that the tag GENERATE_DOCSET is set to YES.
 
-DOCSET_PUBLISHER_ID    = org.doxygen.Publisher
+DOCSET_PUBLISHER_ID    = com.hedronvision.doxygen.publisher
 
 # The DOCSET_PUBLISHER_NAME tag identifies the documentation publisher.
 # The default value is: Publisher.
 # This tag requires that the tag GENERATE_DOCSET is set to YES.
 
-DOCSET_PUBLISHER_NAME  = Publisher
+DOCSET_PUBLISHER_NAME  = publisher
 
 # If the GENERATE_HTMLHELP tag is set to YES then doxygen generates three
 # additional HTML index files: index.hhp, index.hhc, and index.hhk. The
@@ -1468,7 +1461,7 @@ QCH_FILE               =
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHP_NAMESPACE          = org.doxygen.Project
+QHP_NAMESPACE          = com.hedronvision.doxygen
 
 # The QHP_VIRTUAL_FOLDER tag specifies the namespace to use when generating Qt
 # Help Project output. For more information please see Qt Help Project / Virtual
@@ -1527,7 +1520,7 @@ GENERATE_ECLIPSEHELP   = NO
 # The default value is: org.doxygen.Project.
 # This tag requires that the tag GENERATE_ECLIPSEHELP is set to YES.
 
-ECLIPSE_DOC_ID         = org.doxygen.Project
+ECLIPSE_DOC_ID         = com.hedronvision.doxygen
 
 # If you want full control over the layout of the generated HTML pages it might
 # be necessary to disable the index and replace it with your own. The
@@ -1555,7 +1548,9 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO
+## Generate a tree view on the side of the HTML output.
+## Note: This is really only useful when debugging using Doxygen's HTML output.
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
@@ -2074,6 +2069,8 @@ GENERATE_XML           = YES
 # The default directory is: xml.
 # This tag requires that the tag GENERATE_XML is set to YES.
 
+## XML output is built at ${OUTPUT_DIRECTORY}/${XML_OUTPUT}.
+## The final path must agree with what is given to `breathe_projects` in `conf.py`.
 XML_OUTPUT             = xml
 
 # If the XML_PROGRAMLISTING tag is set to YES, doxygen will dump the program
@@ -2084,7 +2081,7 @@ XML_OUTPUT             = xml
 # This tag requires that the tag GENERATE_XML is set to YES.
 
 ## Set to NO if you do not want the Doxygen program listing included.
-## NOTE: A NO value may result in unrecovered file relationships (which file defined which compound).
+## Note: A NO value may result in unrecovered file relationships (which file defined which compound).
 XML_PROGRAMLISTING     = YES
 
 # If the XML_NS_MEMB_FILE_SCOPE tag is set to YES, doxygen will include
@@ -2188,6 +2185,7 @@ ENABLE_PREPROCESSING   = YES
 # The default value is: NO.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
+## If you use macros you’ll want to make sure that Doxygen expands them.
 MACRO_EXPANSION        = YES
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES then
@@ -2249,6 +2247,8 @@ EXPAND_AS_DEFINED      =
 # The default value is: YES.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
+## Though it is not always capable of actually doing the macros, try and let
+## Doxygen’s preprocessor do what it can.
 SKIP_FUNCTION_MACROS   = NO
 
 #---------------------------------------------------------------------------
@@ -2308,7 +2308,8 @@ EXTERNAL_PAGES         = YES
 # powerful graphs.
 # The default value is: YES.
 
-CLASS_DIAGRAMS         = YES
+## Disable class diagrams for now, because not everyone has (or needs) `dot`.
+CLASS_DIAGRAMS         = NO
 
 # You can include diagrams made with dia in doxygen documentation. Doxygen will
 # then run dia to produce the diagram and insert it in the documentation. The
