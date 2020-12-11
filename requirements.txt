@@ -1,0 +1,30 @@
+############
+# Required #
+############
+
+sphinx>=3.0
+
+# For now, try to use the public versions.
+# If you're editing these libraries too, clone locally and install as editable.
+git+https://github.com/sredmond/exhale.git
+breathe  # Or, once stable, git+https://github.com/sredmond/breathe.git
+git+https://github.com/rogerbarton/sphinx-csharp.git  # Or, once stable, git+https://github.com/sredmond/sphinxcontrib-csharpdomain.git
+
+
+############
+# Optional #
+############
+
+# Standard custom themes.
+furo
+sphinx_rtd_theme
+
+# Or, once stable, a special theme just for Hedron!
+# git+git@github.com:hedronvision/hedron-sphinx-theme.git
+
+
+##################
+# For Developers #
+##################
+
+# pycodestyle

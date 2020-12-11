@@ -71,21 +71,21 @@ namespace Hedron
     /// <exception cref="IndexOutOfRangeException">
     /// Thrown when the supplied index is not 0 or 1.
     /// </exception>
-    public double this[int index]
-    {
-      get
-      {
-        switch (index)
-        {
-          case 0:
-            return width;
-          case 1:
-            return height;
-          default:
-            throw new IndexOutOfRangeException("Invalid Size2D index.");
-        }
-      }
-    }
+    // public double this[int index]
+    // {
+    //   get
+    //   {
+    //     switch (index)
+    //     {
+    //       case 0:
+    //         return width;
+    //       case 1:
+    //         return height;
+    //       default:
+    //         throw new IndexOutOfRangeException("Invalid Size2D index.");
+    //     }
+    //   }
+    // }
 
     /// <summary>Construct a new <c>Size2D</c>.</summary>
     /// <param name="width">The width of this <c>Size2D</c>.</param>

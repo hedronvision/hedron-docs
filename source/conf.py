@@ -19,7 +19,9 @@ release = '0.0.1'
 # Names of extension modules, as strings.
 # See: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-extensions
 extensions = [
-    'sphinxcontrib.csharpdomain',
+    # Temporarily disable the in-development csharpdomain for rogerbarton's sphinx_csharp.
+    # 'sphinxcontrib.csharpdomain',
+    'sphinx_csharp',
     'breathe',
     'exhale',
 ]
@@ -60,7 +62,7 @@ pygments_style = 'solarized-light'
 # The theme for HTML output.
 # NOTE: This can be changed to hedron_sphinx_theme once the theme is up on GitHub.
 # See: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_theme
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 
 # -- Options for breathe/exhale ----------------------------------------------
@@ -86,7 +88,7 @@ breathe_default_project = 'hedron-docs'
 # as a shorthand for 'csharp', if possible.
 # See: https://breathe.readthedocs.io/en/latest/directives.html#confval-breathe_domain_by_extension
 breathe_domain_by_extension = {
-    'cs': 'csharp'
+    'cs': 'cs'
 }
 
 # Set up the exhale extension.
