@@ -42,8 +42,8 @@ help:
 #
 # See: https://exhale.readthedocs.io/en/latest/usage.html#optional-create-a-proper-clean-target
 clean:
-	@rm -rf "doxybuild/"  # Clean up doxygen's build output.
-	@rm -rf "api/"  # Clean up exhale's build output.
+	@rm -rf "$(SOURCEDIR)/doxybuild/"  # Clean up doxygen's build output.
+	@rm -rf "$(SOURCEDIR)/unity-api/"  # Clean up exhale's build output.
 	@$(SPHINXBUILD) -M clean "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # Catch-all: Route "unknown" targets to Sphinx.

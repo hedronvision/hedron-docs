@@ -1,6 +1,10 @@
 # Cloned from https://github.com/github/gitignore/blob/master/Python.gitignore
 # by Sam Redmond (sredmond) on 2020-12-01.
 
+# Ignore the build output of doxygen and exhale.
+source/doxybuild/
+source/unity-api/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
