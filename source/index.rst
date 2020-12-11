@@ -1,17 +1,17 @@
-.. hedron-docs documentation master file.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Master file for Hedron Vision's documentation. Sphinx looks here first.
+   This file must contain (at least) the :toctree: directive.
 
-Welcome to hedron-docs's documentation!
-=======================================
+Welcome to Hedron Vision!
+=========================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   unity-api/root
 
 
-Indices and tables
+Indices and Tables
 ==================
 
 * :ref:`genindex`
